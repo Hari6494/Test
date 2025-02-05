@@ -20,18 +20,18 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh 'docker build -t nih-api -f Dockerfile .'
+                sh 'docker build -t test -f Dockerfile .'
             }
         }
         stage('Test') {
             steps {
-                sh 'docker run -t nih-api /bin/bash -c "dotnet test"'
+                sh 'docker run -t test /bin/bash -c "dotnet test"'
             }
         }
         stage('Deploy') {
             steps {
-                sh 'docker tag nih-api:latest hari6494/nih-api:latest'
-                sh 'docker push hari6494/nih-api:latest'
+                sh 'docker tag test:latest hari6494/test:latest'
+                sh 'docker push hari6494/test:latest'
             }
         }
     }
