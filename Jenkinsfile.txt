@@ -1,0 +1,38 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Clean Docker Environment') {
+    steps {
+        script {
+            // Clean up Docker build cache and remove dangling images
+            sh 'docker system prune -f'
+            sh 'docker rmi $(docker images -f "dangling=true" -q) || true'
+        }
+    }
+}
+         stage('List Files') {
+            steps {
+                sh 'pwd'       // Print current directory
+                sh 'ls -lah'   // List all files with details
+                sh 'ls -R'     // List all files recursively
+            }
+        }
+        stage('Build') {
+            steps {
+                sh 'docker build -t nih-api -f Dockerfile .'
+            }
+        }
+        stage('Test') {
+            steps {
+                sh 'docker run -t nih-api /bin/bash -c "dotnet test"'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                sh 'docker tag nih-api:latest hari6494/nih-api:latest'
+                sh 'docker push hari6494/nih-api:latest'
+            }
+        }
+    }
+}
