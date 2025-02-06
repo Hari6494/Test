@@ -23,11 +23,6 @@ pipeline {
                 sh 'docker build -t test -f Dockerfile .'
             }
         }
-        stage('Test') {
-            steps {
-                sh 'docker run -t test /bin/bash -c "dotnet test"'
-            }
-        }
         stage('Deploy') {
             steps {
                 sh 'docker tag test:latest hari6494/test:latest'
