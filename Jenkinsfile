@@ -23,10 +23,24 @@ pipeline {
                 sh 'docker build -t test -f Dockerfile .'
             }
         }
+        stage('Test') {
+            steps {
+                sh 'docker run -t test /bin/bash -c "dotnet test"'
+            }
+        }
         stage('Deploy') {
             steps {
                 sh 'docker tag test:latest hari6494/test:latest'
-                sh 'docker push hari6494/test:latest'
+                //sh 'docker push hari6494/test:latest'
+            }
+        }
+        stage('Run Docker Container') {
+            steps {
+                script {
+                    // Run the Docker container
+                    sh 'docker run -d --name testcontainer -p 8081:80 test:latest'
+                    //docker run -p 8081:80 testapi
+                }
             }
         }
     }
