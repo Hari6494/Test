@@ -33,7 +33,7 @@ pipeline {
             steps {
                 script {
                     // Run the Docker container
-                    sh 'docker run -d --name testcontainer -p 9090:8080 -p 9091:8081 test:latest'
+                    sh 'docker run -d --name testcontainer -p 5001:80 test:latest'
                     //docker run -p 8081:80 testapi
                 }
             }
